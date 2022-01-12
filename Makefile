@@ -5,7 +5,7 @@ CFLAGS=-g
 all: $(PROGRAM)
 
 $(PROGRAM): $(OBJS)
-	$(CC) -o $(PROGRAM) $(OBJS)
+	gcc -o $(PROGRAM) -fopenmp $(OBJS)
 
 clean:
 	rm -f $(PROGRAM) $(OBJS) $(INTERM)

@@ -2,13 +2,11 @@
 // Creted by luisnegrao on 1/11/22.
 //
 #include "Engine.h"
+#include <pthread.h>
 
 int isStronger(Entity *challanger, Entity *reiciver) {
 
     if (challanger->kind != reiciver->kind) {
-
-        if (reiciver->xPos == 2 && reiciver->yPos == 15 && world->CURRENT_GENERATION == 856)
-            printf("%d %d\n", challanger->kind, reiciver->kind);
 
         return 1;
     }
@@ -56,22 +54,16 @@ void move(Entity *entity) {
         //printf("index: %d", index);
     }
     //printMovement(entity);
-    Entity *destiny = &world->nextBoard[CONVERT(world->cols,  entity->movement.moves[index].xPos,  entity->movement.moves[index].yPos)];
+    Entity *destiny = &world->nextBoard[CONVERT(world->cols, entity->movement.moves[index].xPos,
+                                                entity->movement.moves[index].yPos)];
     //printEntity(destiny);
 
     if (isStronger(entity, destiny)) {
-
-        if (world->CURRENT_GENERATION == 856 && entity->xPos == 1 && entity->yPos == 15) {
-            printf("Moved from x: %d ,y: %d ", entity->xPos, entity->yPos);
-        }
 
         entity->xPos = destiny->xPos;
         entity->yPos = destiny->yPos;
         world->nextBoard[CONVERT(world->cols, entity->xPos, entity->yPos)] = *entity;
 
-        if (world->CURRENT_GENERATION == 856) {
-            printf(" to: x: %d, y: %d with timer timer: %d and kind: %d\n", entity->xPos, entity->yPos, entity->procriationTimer, world->nextBoard[CONVERT(world->cols, entity->xPos, entity->yPos)].kind);
-        }
     }
 
 
@@ -182,7 +174,9 @@ void evolve() {
 
     for (int k = 0; k < 4; ++k) {
         for (int i = 0; i < world->rows; i++) {
+
             for (int j = 0; j < world->cols; ++j) {
+
 
                 Entity *entity = &world->board[CONVERT(world->cols, i, j)];
 
@@ -209,4 +203,6 @@ void evolve() {
             }
         }
     }
+
+
 }

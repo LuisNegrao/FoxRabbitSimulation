@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "Engine.h"
+#include <time.h>
+
 
 int main() {
 
@@ -8,17 +10,23 @@ int main() {
 
     printBoard(world->board);
 
-    while (world->CURRENT_GENERATION < 1000) {
+    clock_t init = clock();
+
+    while (world->CURRENT_GENERATION < world->N_GEN) {
 
         evolve();
 
         switchBoards();
 
-        printBoard(world->board);
-
         world->CURRENT_GENERATION ++;
-        printf("NGEN: %d\n", world->CURRENT_GENERATION);
+        //printf("NGEN: %d\n", world->CURRENT_GENERATION);
     }
+
+    clock_t end = clock();
+
+    printBoard(world->board);
+
+    printf("time: %f\n", (float )(end - init));
 
     return 0;
 }
