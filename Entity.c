@@ -31,6 +31,7 @@ Movement createMovement(Entity *entity) {
 
     int moveIndex = 0;
     int mealIndex = 0;
+
     for (int i = 0; i < 4; i++) {
 
         if (moves[i][0] < world->rows && moves[i][1] < world->cols &&
@@ -44,14 +45,28 @@ Movement createMovement(Entity *entity) {
                 if (target->kind == NONE || target->kind == RABBIT) {
 
                     Move move = createMove(moves[i][0], moves[i][1], nextBoardTarget);
+
+                    if (i == 0) move.type = NORTH;
+                    if (i == 1) move.type = EAST;
+                    if (i == 2) move.type = SOUTH;
+                    if (i == 3) move.type = WEST;
+
                     movement.moves[moveIndex] = move;
                     movement.nMoves++;
                     moveIndex++;
+
+
 
                 }
                 if (nextBoardTarget->kind == RABBIT) {
 
                     Move move = createMove(moves[i][0], moves[i][1], nextBoardTarget);
+
+                    if (i == 0) move.type = NORTH;
+                    if (i == 1) move.type = EAST;
+                    if (i == 2) move.type = SOUTH;
+                    if (i == 3) move.type = WEST;
+
                     movement.meals[mealIndex] = move;
                     movement.nMeals++;
                     mealIndex++;
@@ -60,6 +75,12 @@ Movement createMovement(Entity *entity) {
 
             } else if (target->kind == NONE) {
                 Move move = createMove(moves[i][0], moves[i][1], target);
+
+                if (i == 0) move.type = NORTH;
+                if (i == 1) move.type = EAST;
+                if (i == 2) move.type = SOUTH;
+                if (i == 3) move.type = WEST;
+
                 movement.nMoves++;
                 movement.moves[moveIndex] = move;
                 moveIndex++;

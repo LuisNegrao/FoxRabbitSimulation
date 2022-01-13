@@ -58,12 +58,12 @@ void move(Entity *entity) {
         //printf("index: %d", index);
     }
     //printMovement(entity);
-    omp_set_lock(&world->locks[CONVERT(world->cols, entity->movement.moves[index].xPos,
-                                       entity->movement.moves[index].yPos)]);
 
     Entity *destiny = &world->nextBoard[CONVERT(world->cols, entity->movement.moves[index].xPos,
-                                                entity->movement.moves[index].yPos)];
-    //printEntity(destiny);
+                                               entity->movement.moves[index].yPos)];
+
+    omp_set_lock(&world->locks[CONVERT(world->cols, entity->movement.moves[index].xPos,
+                                       entity->movement.moves[index].yPos)]);
 
     if (isStronger(entity, destiny)) {
 
@@ -98,10 +98,11 @@ void eat(Entity *entity) {
 
     }
 
+    Entity *destiny = &world->nextBoard[CONVERT(world->cols, entity->movement.meals[index].xPos,
+                                                entity->movement.meals[index].yPos)];
+
     omp_set_lock(&world->locks[CONVERT(world->cols, entity->movement.meals[index].xPos,
                                        entity->movement.meals[index].yPos)]);
-
-    Entity *destiny = entity->movement.meals[index].entity;
 
     entity->xPos = destiny->xPos;
     entity->yPos = destiny->yPos;
@@ -188,11 +189,14 @@ void evolveFox(Entity *entity) {
 
 void evolve() {
     {
+
+        int amount = world->cols;
+
         for (int k = 0; k < 4; ++k) {
-            #pragma omp parallel for num_threads(4) schedule(static, 1) collapse(2)
+            #pragma omp parallel for num_threads(2) schedule(static, 5) collapse(2)
             for (int i = 0; i < world->rows; i++) {
                 for (int j = 0; j < world->cols; ++j) {
-                    //printf("%d\n", omp_get_thread_num());
+                    printf("x: %d, y: %d %d\n",i,j, omp_get_thread_num());
                     Entity *entity = &world->board[CONVERT(world->cols, i, j)];
 
                     if (entity->kind == RABBIT && k == 0) {
@@ -200,6 +204,7 @@ void evolve() {
                     }
 
                     if (entity->kind == RABBIT && k == 1) {
+
                         evolveRabbit(entity);
                     }
 

@@ -1,3 +1,0 @@
-/home/luisnegrao/Trabalho/Faculdade/5Ano/Paralela/FoxAndRabiit/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/luisnegrao/Trabalho/Faculdade/5Ano/Paralela/FoxAndRabiit/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/luisnegrao/Trabalho/Faculdade/5Ano/Paralela/FoxAndRabiit/cmake-build-debug/CMakeFiles/FoxAndRabiit.dir

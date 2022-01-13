@@ -19,8 +19,6 @@ void bigBang(FILE *input) {
     world->board = (Entity *) malloc(sizeof(Entity) * world->cols * world->rows);
     world->nextBoard = (Entity *) malloc(sizeof(Entity) * world->cols * world->rows);
 
-
-
     for (int i = 0; i < world->rows; i++) {
         for (int j = 0; j < world->cols; j++) {
             world->board[CONVERT(world->cols, i, j)].xPos = i;
@@ -143,7 +141,7 @@ void switchBoards() {
 
     world->board = world->nextBoard;
     world->nextBoard = (Entity*) malloc(sizeof (Entity) * world->rows * world->cols);
-
+    
     for (int i = 0; i < world->rows; i++) {
         for (int j = 0; j < world->cols; j++) {
 

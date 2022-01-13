@@ -9,6 +9,13 @@ typedef struct Entity Entity;
 
 typedef struct Move {
 
+    enum {
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST
+    }type;
+
     int xPos;
     int yPos;
     Entity *entity;

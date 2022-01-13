@@ -24,9 +24,10 @@ int main(int argc, char *argv[]) {
         world->CURRENT_GENERATION++;
     }
 
-    //printBoard(world->board);
-
     double end = omp_get_wtime();
+
+    printBoard(world->board);
+
 
     printf("time: %f\n", (end - init));
 
