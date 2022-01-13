@@ -62,6 +62,17 @@ void move(Entity *entity) {
     Entity *destiny = &world->nextBoard[CONVERT(world->cols, entity->movement.moves[index].xPos,
                                                entity->movement.moves[index].yPos)];
 
+    if (entity->movement.moves[index].type == WEST || entity->movement.moves[index].type == EAST) {
+        if (isStronger(entity, destiny)) {
+
+            entity->xPos = destiny->xPos;
+            entity->yPos = destiny->yPos;
+            world->nextBoard[CONVERT(world->cols, entity->xPos, entity->yPos)] = *entity;
+
+        }
+        return;
+    }
+
     omp_set_lock(&world->locks[CONVERT(world->cols, entity->movement.moves[index].xPos,
                                        entity->movement.moves[index].yPos)]);
 
@@ -100,6 +111,18 @@ void eat(Entity *entity) {
 
     Entity *destiny = &world->nextBoard[CONVERT(world->cols, entity->movement.meals[index].xPos,
                                                 entity->movement.meals[index].yPos)];
+
+    if (entity->movement.meals[index].type == WEST || entity->movement.meals[index].type == EAST) {
+        if (isStronger(entity, destiny)) {
+
+            entity->xPos = destiny->xPos;
+            entity->yPos = destiny->yPos;
+            world->nextBoard[CONVERT(world->cols, entity->xPos, entity->yPos)] = *entity;
+
+        }
+        return;
+    }
+
 
     omp_set_lock(&world->locks[CONVERT(world->cols, entity->movement.meals[index].xPos,
                                        entity->movement.meals[index].yPos)]);
@@ -193,10 +216,10 @@ void evolve() {
         int amount = world->cols;
 
         for (int k = 0; k < 4; ++k) {
-            #pragma omp parallel for num_threads(2) schedule(static, 5) collapse(2)
+            #pragma omp parallel for num_threads(16) schedule(static, 20) collapse(2)
             for (int i = 0; i < world->rows; i++) {
                 for (int j = 0; j < world->cols; ++j) {
-                    printf("x: %d, y: %d %d\n",i,j, omp_get_thread_num());
+                    //printf("x: %d, y: %d %d\n",i,j, omp_get_thread_num());
                     Entity *entity = &world->board[CONVERT(world->cols, i, j)];
 
                     if (entity->kind == RABBIT && k == 0) {
