@@ -97,6 +97,9 @@
 		<Unit filename="/home/luisnegrao/Trabalho/Faculdade/5Ano/Paralela/FoxAndRabiit/main.c">
 			<Option target="FoxAndRabiit"/>
 		</Unit>
+		<Unit filename="/home/luisnegrao/Trabalho/Faculdade/5Ano/Paralela/FoxAndRabiit/teste.c">
+			<Option target="FoxAndRabiit"/>
+		</Unit>
 		<Unit filename="/home/luisnegrao/Trabalho/Faculdade/5Ano/Paralela/FoxAndRabiit/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 
 
 #define CONVERT(size, row, col) (((row) * (size)) + (col))
@@ -23,8 +24,11 @@ typedef struct World {
     int N_GEN;
     int CURRENT_GENERATION;
 
+    omp_lock_t *locks;
+
     Entity *board;
     Entity *nextBoard;
+
 
 }World;
 

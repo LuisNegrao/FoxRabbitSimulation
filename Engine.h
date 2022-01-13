@@ -5,7 +5,6 @@
 #ifndef FOXANDRABIIT_ENGINE_H
 #define FOXANDRABIIT_ENGINE_H
 #include "Enviroment.h"
-
 /**
  *
  * Moves a given entity to the correct place

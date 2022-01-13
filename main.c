@@ -1,16 +1,19 @@
+#include <omp.h>
 #include <stdio.h>
 #include "Engine.h"
-#include <time.h>
+#include "time.h"
 
 
-int main() {
+int main(int argc, char *argv[]) {
+
 
     FILE *f = stdin;
     bigBang(f);
 
-    printBoard(world->board);
+    //printBoard(world->board);
 
-    clock_t init = clock();
+
+    double init = omp_get_wtime();
 
     while (world->CURRENT_GENERATION < world->N_GEN) {
 
@@ -18,15 +21,14 @@ int main() {
 
         switchBoards();
 
-        world->CURRENT_GENERATION ++;
-        //printf("NGEN: %d\n", world->CURRENT_GENERATION);
+        world->CURRENT_GENERATION++;
     }
 
-    clock_t end = clock();
+    //printBoard(world->board);
 
-    printBoard(world->board);
+    double end = omp_get_wtime();
 
-    printf("time: %f\n", (float )(end - init));
+    printf("time: %f\n", (end - init));
 
     return 0;
 }

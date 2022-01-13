@@ -31,7 +31,6 @@ Movement createMovement(Entity *entity) {
 
     int moveIndex = 0;
     int mealIndex = 0;
-
     for (int i = 0; i < 4; i++) {
 
         if (moves[i][0] < world->rows && moves[i][1] < world->cols &&

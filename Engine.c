@@ -2,7 +2,8 @@
 // Creted by luisnegrao on 1/11/22.
 //
 #include "Engine.h"
-#include <pthread.h>
+#include "omp.h"
+#include "math.h"
 
 int isStronger(Entity *challanger, Entity *reiciver) {
 
@@ -33,11 +34,14 @@ void move(Entity *entity) {
 
     if (numberOfMoves == 0) {
 
+        omp_set_lock(&world->locks[CONVERT(world->cols, entity->xPos, entity->yPos)]);
+
         Entity *destiny = &world->nextBoard[CONVERT(world->cols, entity->xPos, entity->yPos)];
 
         if (isStronger(entity, destiny)) {
             world->nextBoard[CONVERT(world->cols, entity->xPos, entity->yPos)] = *entity;
         }
+        omp_unset_lock(&world->locks[CONVERT(world->cols, entity->xPos, entity->yPos)]);
 
         return;
     }
@@ -54,6 +58,9 @@ void move(Entity *entity) {
         //printf("index: %d", index);
     }
     //printMovement(entity);
+    omp_set_lock(&world->locks[CONVERT(world->cols, entity->movement.moves[index].xPos,
+                                       entity->movement.moves[index].yPos)]);
+
     Entity *destiny = &world->nextBoard[CONVERT(world->cols, entity->movement.moves[index].xPos,
                                                 entity->movement.moves[index].yPos)];
     //printEntity(destiny);
@@ -65,6 +72,9 @@ void move(Entity *entity) {
         world->nextBoard[CONVERT(world->cols, entity->xPos, entity->yPos)] = *entity;
 
     }
+
+    omp_unset_lock(&world->locks[CONVERT(world->cols, entity->movement.moves[index].xPos,
+                                       entity->movement.moves[index].yPos)]);
 
 
 }
@@ -88,12 +98,18 @@ void eat(Entity *entity) {
 
     }
 
+    omp_set_lock(&world->locks[CONVERT(world->cols, entity->movement.meals[index].xPos,
+                                       entity->movement.meals[index].yPos)]);
+
     Entity *destiny = entity->movement.meals[index].entity;
 
     entity->xPos = destiny->xPos;
     entity->yPos = destiny->yPos;
 
     world->nextBoard[CONVERT(world->cols, entity->xPos, entity->yPos)] = *entity;
+
+    omp_unset_lock(&world->locks[CONVERT(world->cols, entity->movement.meals[index].xPos,
+                                       entity->movement.meals[index].yPos)]);
 
 
 }
@@ -171,38 +187,35 @@ void evolveFox(Entity *entity) {
 }
 
 void evolve() {
+    {
+        for (int k = 0; k < 4; ++k) {
+            #pragma omp parallel for num_threads(4) schedule(static, 1) collapse(2)
+            for (int i = 0; i < world->rows; i++) {
+                for (int j = 0; j < world->cols; ++j) {
+                    //printf("%d\n", omp_get_thread_num());
+                    Entity *entity = &world->board[CONVERT(world->cols, i, j)];
 
-    for (int k = 0; k < 4; ++k) {
-        for (int i = 0; i < world->rows; i++) {
+                    if (entity->kind == RABBIT && k == 0) {
+                        entity->movement = createMovement(entity);
+                    }
 
-            for (int j = 0; j < world->cols; ++j) {
+                    if (entity->kind == RABBIT && k == 1) {
+                        evolveRabbit(entity);
+                    }
 
 
-                Entity *entity = &world->board[CONVERT(world->cols, i, j)];
+                    if (entity->kind == FOX && k == 2) {
+                        entity->movement = createMovement(entity);
+                    }
 
-                if (entity->kind == RABBIT && k == 0) {
-                    entity->movement = createMovement(entity);
+                    if (entity->kind == FOX && k == 3) {
+                        evolveFox(entity);
+                    }
+
+
                 }
-
-
-                if (entity->kind == RABBIT && k == 1) {
-                    evolveRabbit(entity);
-                }
-
-
-                if (entity->kind == FOX && k == 2) {
-                    entity->movement = createMovement(entity);
-                }
-
-
-                if (entity->kind == FOX && k == 3) {
-                    evolveFox(entity);
-                }
-
-
             }
         }
     }
-
 
 }

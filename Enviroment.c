@@ -56,6 +56,14 @@ void bigBang(FILE *input) {
         world->board[CONVERT(world->cols, entity.xPos, entity.yPos)] = entity;
 
     }
+
+    world->locks = (omp_lock_t *) malloc(sizeof(omp_lock_t) * world->rows * world->rows);
+
+    for (int i = 0; i < world->rows * world->rows; i++) {
+
+        omp_init_lock(&world->locks[i]);
+
+    }
 }
 
 void printBoard(Entity *board) {

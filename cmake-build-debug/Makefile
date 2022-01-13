@@ -250,6 +250,33 @@ main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/FoxAndRabiit.dir/build.make CMakeFiles/FoxAndRabiit.dir/main.c.s
 .PHONY : main.c.s
 
+teste.o: teste.c.o
+
+.PHONY : teste.o
+
+# target to build an object file
+teste.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/FoxAndRabiit.dir/build.make CMakeFiles/FoxAndRabiit.dir/teste.c.o
+.PHONY : teste.c.o
+
+teste.i: teste.c.i
+
+.PHONY : teste.i
+
+# target to preprocess a source file
+teste.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/FoxAndRabiit.dir/build.make CMakeFiles/FoxAndRabiit.dir/teste.c.i
+.PHONY : teste.c.i
+
+teste.s: teste.c.s
+
+.PHONY : teste.s
+
+# target to generate assembly for a file
+teste.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/FoxAndRabiit.dir/build.make CMakeFiles/FoxAndRabiit.dir/teste.c.s
+.PHONY : teste.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -271,6 +298,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... teste.o"
+	@echo "... teste.i"
+	@echo "... teste.s"
 .PHONY : help
 
 
