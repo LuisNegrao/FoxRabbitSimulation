@@ -3,7 +3,7 @@
 //
 
 #include "Enviroment.h"
-
+#include "math.h"
 
 void bigBang(FILE *input) {
 
@@ -19,8 +19,8 @@ void bigBang(FILE *input) {
     world->board = (Entity *) malloc(sizeof(Entity) * world->cols * world->rows);
     world->nextBoard = (Entity *) malloc(sizeof(Entity) * world->cols * world->rows);
 
-
-
+    int chunk = (int) ceil((double) world->rows / 16);
+#pragma omp parallel for num_threads(1) schedule(static, chunk)
     for (int i = 0; i < world->rows; i++) {
         for (int j = 0; j < world->cols; j++) {
             world->board[CONVERT(world->cols, i, j)].xPos = i;
@@ -144,6 +144,9 @@ void switchBoards() {
     world->board = world->nextBoard;
     world->nextBoard = (Entity*) malloc(sizeof (Entity) * world->rows * world->cols);
 
+    int chunk = (int) ceil((double) world->rows / 16);
+
+#pragma omp parallel for num_threads(16) schedule(static, chunk)
     for (int i = 0; i < world->rows; i++) {
         for (int j = 0; j < world->cols; j++) {
 

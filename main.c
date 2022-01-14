@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 
     double end = omp_get_wtime();
 
-    printf("time: %f\n", (end - init));
+    printf("time: %f\n", (end - init)*1000);
 
     return 0;
 }

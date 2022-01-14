@@ -10,11 +10,11 @@
  * Moves a given entity to the correct place
  *
  */
-void move(Entity *entity);
-void eat(Entity *entity);
+void move(Entity *entity, int lock);
+void eat(Entity *entity, int lock);
 void evolve();
-void evolveRabbit(Entity *entity);
-void evolveFox(Entity *entity);
+void evolveRabbit(Entity *entity, int lock);
+void evolveFox(Entity *entity, int lock);
 int isStronger(Entity *challanger, Entity *reiciver);
 
 #endif //FOXANDRABIIT_ENGINE_H
